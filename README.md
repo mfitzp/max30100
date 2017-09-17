@@ -3,10 +3,12 @@
 This library provides a basic Python interface to the MAXIM MAX30100 heart rate and Sp02 sensor chip. Other libraries
 are available (e.g. Intel's UPM) but these are not easily compiled on a Raspberry Pi.
 
-Currently this library supports both IR led (pulse) and red led (SpO2) modes, with support (via gpiozero) for
-catching on-board interrupts and triggering real-time measurements. The examples below demonstrate common setups.
+This library is a Python re-implementation of original C library by Connor Huffine/Kontakt, available [here](https://github.com/kontakt/MAX30100),
+with a slightly different API + additional features (buffering values, etc.).
 
-To convert measurements into heart rate and oximetry values see the calculations further down.
+Currently this library supports both IR led (pulse) and red led (SpO2) modes, with support (via gpiozero) for
+catching on-board interrupts and triggering real-time measurements. The examples below demonstrate a common setup.
+Calculations for converting measured values into actual number are not yet included.
 
 ## Basic setup
 
@@ -62,7 +64,7 @@ The previous measurements are available in `.buffer_ir` and `.buffer_red`.
 
 The MX30100 chip provides an interrupt mechanism which can be used to trigger readings once values are available. Using
 `gpiozero` we can connect this interrupt trigger to the `MAX30100.read_sensor` method, resulting in real-time measurement
-output in our FIFO buffer. For example —
+output in our FIFO buffer. Connect the INT pin of the MAX301000 to a suitable pin on your controller. For example —
 
 
     mx30.set_interrupt(max30100.INTERRUPT_FIFO)  # Set up a trigger to fire when the FIFO buffer (on the MAX30100) fills up.
